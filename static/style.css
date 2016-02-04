@@ -10,3 +10,9 @@ body {
     padding: 0.8em;
     background: white;
 }
+.entries li {
+    margin: 0.8em 1.2em;
+}
+.entries li h2 {
+    margin-left: -1em;
+}
