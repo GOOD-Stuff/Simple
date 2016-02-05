@@ -3,6 +3,14 @@ body {
     background: #eee;
 }
 
+div#nav {
+    text-align: right;
+    width: 600px;
+    margin: auto;
+    font-size: smaller;
+    color: chartreuse;
+}
+
 .page {
     margin: 2em auto;
     width: 35em;

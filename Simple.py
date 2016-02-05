@@ -53,23 +53,28 @@ def upload_file():
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
+            g.filename = filename
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-             #send_from_directory(app.config[UPLOAD_FOLDER],filename)
             g.db.execute('insert into entries (photoPath, comm, author) values (?, ?,?)',
-                  [filename, request.form['comm'],request.form['author']])
+                  [os.path.join(app.config['UPLOAD_FOLDER'], filename), request.form['comm'],request.form['author']])
             g.db.commit()
             flash('New photo was successfully posted')
-            return redirect(url_for('uploaded_file',filename=filename))
+            return redirect(url_for('home'))
     return render_template('upload_photo.html')
 
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'],
-                               filename)
+
+# @app.route('/uploads/<filename>')
+# def uploaded_file(filename):
+#     return send_from_directory(app.config['UPLOAD_FOLDER'],
+#                                filename)
 
 @app.route('/')
 def home():
-    return 'Hello world!'
+    cur = g.db.execute('select photoPath, comm, author from entries order by id desc')
+    entries = [dict(photoPath=row[0], comm=row[1], author=row[2]) for row in cur.fetchall()]
+    return render_template('home.html',entries=entries)
+
+#TODO: Add view all photos
 
 # @app.route('/')
 # def show_entries():
