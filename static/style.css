@@ -4,10 +4,10 @@ body {
 }
 
 div#nav {
-    text-align: right;
+    text-align: left;
     width: 600px;
     margin: auto;
-    font-size: smaller;
+    font-size: medium;
     color: chartreuse;
 }
 
@@ -26,4 +26,5 @@ div#nav {
 }
 p.image img {
     max-width: 320px;
+    max-height: 320px;
 }

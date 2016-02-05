@@ -50,8 +50,8 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            g.db.execute('insert into entries (photoPath, comm, author) values (?, ?,?)',
-                   [filename, request.form['comm'],request.form['author']])
+            g.db.execute('insert into entries (photoPath, comm) values (?, ?)',
+                   [filename, request.form['comm']])
             g.db.commit()
             uploaded_file(filename)
             return redirect(url_for('home'))
@@ -65,8 +65,8 @@ def uploaded_file(filename):
 
 @app.route('/')
 def home():
-    cur = g.db.execute('select photoPath, comm, author from entries order by id desc')
-    entries = [dict(photoPath=row[0], comm=row[1], author=row[2]) for row in cur.fetchall()]
+    cur = g.db.execute('select photoPath, comm from entries order by id desc')
+    entries = [dict(photoPath=row[0], comm=row[1]) for row in cur.fetchall()]
     return render_template('home.html',entries=entries)
 
 if __name__ == '__main__':
