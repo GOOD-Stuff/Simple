@@ -5,13 +5,10 @@
     <a href="{{ url_for('upload_file') }}">New Post</a>
 </div>
 {% for entry in entries %}
-     <p class=image>
-    <img src="{{ entry.photoPath }}">
-</p>
     <h2>{{ entry.author }}</h2>
-
+    <p class=image>
+    <a href="{{ entry.photoPath }}"><img src="{{ entry.photoPath }}"></a>
+    </p>
     <h4>{{ entry.comm|safe }}</h4>
-  {% else %}
-    <li><em>Unbelievable.  No entries here so far</em>
   {% endfor %}
 {% endblock %}

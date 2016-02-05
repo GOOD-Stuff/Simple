@@ -24,3 +24,6 @@ div#nav {
 .entries li h2 {
     margin-left: -1em;
 }
+p.image img {
+    max-width: 320px;
+}

@@ -6,9 +6,6 @@ from contextlib import closing
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
 
-#from flask.ext.uploads import UploadSet,configure_uploads, IMAGES, UploadNotAllowed
-#from flask_uploads import UploadSet, configure_uploads, IMAGES, UploadNotAllowed
-
 # Config
 DATABASE = '/tmp/upld.db'
 SECRET_KEY = 'development key'
@@ -21,7 +18,6 @@ ALLOWED_EXTENSIONS = set(['jpg','png', 'jpeg', 'gif'])
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config.from_object(__name__)
-#app.config.from_object(__name__)
 
 def init_db():
     with closing(connect_db()) as db:
@@ -53,34 +49,25 @@ def upload_file():
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            g.filename = filename
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             g.db.execute('insert into entries (photoPath, comm, author) values (?, ?,?)',
-                  [os.path.join(app.config['UPLOAD_FOLDER'], filename), request.form['comm'],request.form['author']])
+                   [filename, request.form['comm'],request.form['author']])
             g.db.commit()
-            flash('New photo was successfully posted')
+            uploaded_file(filename)
             return redirect(url_for('home'))
     return render_template('upload_photo.html')
 
 
-# @app.route('/uploads/<filename>')
-# def uploaded_file(filename):
-#     return send_from_directory(app.config['UPLOAD_FOLDER'],
-#                                filename)
+@app.route('/<filename>')
+def uploaded_file(filename):
+     return send_from_directory(app.config['UPLOAD_FOLDER'],
+                                filename)
 
 @app.route('/')
 def home():
     cur = g.db.execute('select photoPath, comm, author from entries order by id desc')
     entries = [dict(photoPath=row[0], comm=row[1], author=row[2]) for row in cur.fetchall()]
     return render_template('home.html',entries=entries)
-
-#TODO: Add view all photos
-
-# @app.route('/')
-# def show_entries():
-#     cur = g.db.execute('select title, text from entries order by id desc')
-#     entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
-#     return render_template('show_entries.html', entries=entries)
 
 if __name__ == '__main__':
     app.debug = True
