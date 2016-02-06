@@ -9,3 +9,5 @@ from Simple import init_db
 init_db()
 или 
 sqlite3 /upld.db < schema.sql
+
+В Downloads находится уже готовая БД и архив с фотографиями. 
