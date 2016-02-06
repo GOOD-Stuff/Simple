@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block title %}Upload{% endblock title %}
+{% block body %}
+    <div id=nav>
+        <a href="{{ url_for('home') }}">Home</a>
+    </div>
+    <h2>Upload new photo</h2>
+<form action="{{ url_for('upload_file') }}" method=post enctype=multipart/form-data>
+   <dl>
+       <dt>Choose photo
+           <dd><input type=file name=file style="padding-bottom: 0.5em">
+       <dt>Description:
+           <dd><textarea name=comm rows=5 cols=40></textarea>
+           <dd><input type=submit value=Upload>
+   </dl>
+</form>
+{% endblock %}
