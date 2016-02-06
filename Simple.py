@@ -38,11 +38,12 @@ def teardown_request(exception):
 def connect_db():
     return sqlite3.connect(app.config['DATABASE'])
 
-#Standard solve upload file
+### Standard solve upload file ###
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
+# Upload on server
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
@@ -57,12 +58,14 @@ def upload_file():
             return redirect(url_for('home'))
     return render_template('upload_photo.html')
 
-
+# Upload photo from client side
 @app.route('/<filename>')
 def uploaded_file(filename):
      return send_from_directory(app.config['UPLOAD_FOLDER'],
                                 filename)
+######################################
 
+# Start page, show all from db
 @app.route('/')
 def home():
     cur = g.db.execute('select photoPath, comm from entries order by id desc')

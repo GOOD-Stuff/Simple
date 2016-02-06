@@ -1,14 +1,18 @@
 {% extends "layout.html" %}
 {% block title %}Welcome!{% endblock title %}
+
 {% block body %}
+   <div class="wrapper">
+    <div class="masonry">
     <div id=nav>
     <a href="{{ url_for('upload_file') }}">New Post</a>
 </div>
 {% for entry in entries %}
-    <h2>{{ entry.author }}</h2>
-    <p class=image>
-    <a href="{{ entry.photoPath }}"><img src="{{ entry.photoPath }}"></a>
-    </p>
-    <h4>{{ entry.comm|safe }}</h4>
+    <div class="item">
+        <img src="{{ entry.photoPath }}">
+        <br>{{ entry.comm|safe }}<a href="{{ entry.photoPath }}"><br>Подробнее »</a>
+    </div>
   {% endfor %}
+     </div>
+    </div>
 {% endblock %}
