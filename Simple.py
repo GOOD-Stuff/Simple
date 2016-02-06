@@ -1,22 +1,23 @@
 import os
 import sqlite3
 from flask import (Flask, request, g, redirect, url_for, \
-     abort, render_template, flash)
+     abort, render_template)
 from contextlib import closing
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
 
 # Config
-DATABASE = '/tmp/upld.db'
+DATABASE = '/upld.db' # Database place
 SECRET_KEY = 'development key'
 USERNAME = 'admin'
 PASSWORD = 'default'
 
-UPLOAD_FOLDER = '/tmp/upload'
+UPLOAD_FOLDER = '/upload' # Uploaded files place
 ALLOWED_EXTENSIONS = set(['jpg','png', 'jpeg', 'gif'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 # The restriction on file size - 16 MB
 app.config.from_object(__name__)
 
 def init_db():
@@ -73,5 +74,5 @@ def home():
     return render_template('home.html',entries=entries)
 
 if __name__ == '__main__':
-    app.debug = True
+#
     app.run()
