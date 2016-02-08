@@ -7,12 +7,12 @@ from werkzeug.utils import secure_filename
 from flask import send_from_directory
 
 # Config
-DATABASE = '/upld.db' # Database place
+DATABASE = '/tmp/upld.db' # Database place
 SECRET_KEY = 'development key'
 USERNAME = 'admin'
 PASSWORD = 'default'
 
-UPLOAD_FOLDER = '/upload' # Uploaded files place
+UPLOAD_FOLDER = '/tmp/upload' # Uploaded files place
 ALLOWED_EXTENSIONS = set(['jpg','png', 'jpeg', 'gif'])
 
 app = Flask(__name__)
@@ -74,5 +74,4 @@ def home():
     return render_template('home.html',entries=entries)
 
 if __name__ == '__main__':
-#
     app.run()
