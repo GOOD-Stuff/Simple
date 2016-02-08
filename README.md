@@ -5,9 +5,21 @@
 Проект написан на языке python 3.5 с применением фреймворка Flask 0.10 и базы данных sqlite3. Система: Ubuntu 15.10; IDE: PyCharm 5.0.4
 
 Для инициализации БД можно воспользоваться командой:
-* from Simple import init_db
-* init_db()
+
+```
+#!python
+
+from Simple import init_db
+init_db()
+```
+
 или
-* sqlite3 /upld.db < schema.sql
+
+```
+#!shell
+
+sqlite3 /upld.db < schema.sql
+```
+
 
 В [Downloads](https://bitbucket.org/Gustoff/simple/downloads) находятся уже готовая БД и архив с фотографиями.
