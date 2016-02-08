@@ -30,7 +30,7 @@ init_db()
 ```
 #!shell
 
-sqlite3 /upld.db < schema.sql
+sqlite3 /tmp/upld.db < schema.sql
 ```
 
 
