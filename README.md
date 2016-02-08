@@ -10,4 +10,4 @@
 или
 * sqlite3 /upld.db < schema.sql
 
-В Downloads ([Downloads](https://bitbucket.org/Gustoff/simple/downloads)) находятся уже готовая БД и архив с фотографиями.
+В [Downloads](https://bitbucket.org/Gustoff/simple/downloads) находятся уже готовая БД и архив с фотографиями.
