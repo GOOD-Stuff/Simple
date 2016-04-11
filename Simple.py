@@ -1,10 +1,11 @@
 import os
 import sqlite3
 from flask import (Flask, request, g, redirect, url_for, \
-     abort, render_template)
+     abort, render_template, jsonify)
 from contextlib import closing
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
+from flask.ext.responses import json_response
 
 # Config
 DATABASE = '/tmp/upld.db' # Database place
@@ -65,13 +66,26 @@ def uploaded_file(filename):
      return send_from_directory(app.config['UPLOAD_FOLDER'],
                                 filename)
 ######################################
+@app.route('/json')
+def getjson():
+    cur = g.db.execute('select photoPath, comm from entries order by id desc')
+    #entries = {row[0]: row[1] for row in cur.fetchall()}
+    entries = [dict(photoPath=row[0], comm=row[1]) for row in cur.fetchall()]
+    print(type(entries))
+    print(entries)
+    #resp = Response(response=data, status=200, mimetype="application/json")
+    #return(resp)
+    #see on http://texnolog.org/flask/ajax
+    return jsonify(result=entries)#success=True, result=entries)#json_response(entries, status_code=201)
 
 # Start page, show all from db
 @app.route('/')
 def home():
     cur = g.db.execute('select photoPath, comm from entries order by id desc')
     entries = [dict(photoPath=row[0], comm=row[1]) for row in cur.fetchall()]
+    getjson()
     return render_template('home.html',entries=entries)
 
 if __name__ == '__main__':
+    app.debug = True
     app.run()
