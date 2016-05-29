@@ -5,7 +5,7 @@ from flask import (Flask, request, g, redirect, url_for, \
 from contextlib import closing
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
-from flask.ext.responses import json_response
+#from flask.ext.responses import json_response
 
 # Config
 DATABASE = '/tmp/upld.db' # Database place
@@ -67,7 +67,7 @@ def uploaded_file(filename):
                                 filename)
 ######################################
 @app.route('/json')
-def getjson():
+def getsjson():
     cur = g.db.execute('select photoPath, comm from entries order by id desc')
     #entries = {row[0]: row[1] for row in cur.fetchall()}
     entries = [dict(photoPath=row[0], comm=row[1]) for row in cur.fetchall()]
@@ -83,9 +83,23 @@ def getjson():
 def home():
     cur = g.db.execute('select photoPath, comm from entries order by id desc')
     entries = [dict(photoPath=row[0], comm=row[1]) for row in cur.fetchall()]
-    getjson()
+    #getsjson(entries)
     return render_template('home.html',entries=entries)
 
 if __name__ == '__main__':
-    app.debug = True
-    app.run()
+    app.debug = False
+
+# Create log file
+    if not app.debug:
+        import logging
+        from logging.handlers import RotatingFileHandler
+        logger = logging.getLogger('werkzeug')  # that need for writen all stream output
+        file_handler = RotatingFileHandler('simple.log', maxBytes=1024 * 1024 * 1, backupCount=10)
+        logger.addHandler(file_handler)
+        file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+        file_handler.setLevel(logging.INFO)
+        app.logger.addHandler(file_handler)
+        app.logger.info('simple startup')
+
+    app.run(port=8080)
+
